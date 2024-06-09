@@ -1,22 +1,15 @@
-import { useForm, Controller, SubmitHandler } from 'react-hook-form'
-import Select from 'react-select'
+import { useForm } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
-import { Box, TextField, Modal, Button } from '@mui/material'
+import { Box, Modal, Button } from '@mui/material'
 import './styles.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Confirm from '../Confirm'
 
-const ACTIONS = {
-  ADD: 'add',
-  EDIT: 'edit',
-  DELETE: 'delete'
-}
+const InputForm = ({showInputForm, setShowInputForm, beneficiary, selectedIndex, action}) => {
+  const [confirmation, setConfirmation] = useState()
+  const [beneficiaryDetails, setBeneficiaryDetails] = useState(beneficiary || {})
 
-const InputForm = ({showInputForm, setShowInputForm, beneficiary}) => {
-  const [confirmation, setConfirmation] = useState(false)
-  const [beneficiaryDetails, setBeneficiaryDetails] = useState({})
-
-  const { register, control, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       fullName: beneficiary?.fullName || "",
       address: beneficiary?.address || "",
@@ -24,6 +17,12 @@ const InputForm = ({showInputForm, setShowInputForm, beneficiary}) => {
       pincode: beneficiary?.pincode || "",
     }
   })
+
+  useEffect(() => {
+    if(action === 'Delete') {
+      setConfirmation(true)
+    }
+  }, [action])
 
   // const onSubmit = (data) => console.log(data)
   const onSubmit = (data) => {
@@ -34,13 +33,11 @@ const InputForm = ({showInputForm, setShowInputForm, beneficiary}) => {
     setConfirmation(true)
     // setShowInputForm(false)
   }
-  // console.log(watch('fullName'))
 
   return (
     <div >
       <Modal 
-        open={showInputForm} 
-        // onClose={()=>setShowInputForm(!showInputForm)}
+        open={showInputForm}
         disableEscapeKeyDown
         disableBackdropClick
       >
@@ -77,7 +74,6 @@ const InputForm = ({showInputForm, setShowInputForm, beneficiary}) => {
             </select>
             {errors.country && <span className='errorText'>*This field is required</span>}
 
-
             <label>Pincode:</label>
             <input type='number' {...register('pincode', {
               // required: true,
@@ -85,21 +81,31 @@ const InputForm = ({showInputForm, setShowInputForm, beneficiary}) => {
                 value: /^\d{6}$/,
                 message: 'Enter a valid 6 digit Pin code'
               },
-              validate: (fieldValue) => {
-                return (
-                  !/^(\d)\1{5}$/.test(fieldValue) || 'Enter a valid 6 digit Pin-code'
-                )
+              validate: {
+                pattern1: (fieldValue) => {
+                  return (
+                    !/^(\d)\1{5}$/.test(fieldValue) || 'Enter a valid 6 digit Pin-code'
+                  )
+                }
+
               }
             })} />
-
             {errors.pincode && <span className='errorText'>*{errors.pincode?.message}</span>}
 
             <input type='submit' className='submitButton' />
           </form>
         </Box>
       </Modal>
-      {confirmation && <Confirm confirmation={confirmation} setConfirmation={setConfirmation} setShowInputForm={setShowInputForm} beneficiaryDetails={beneficiaryDetails} />}
-      <DevTool control={control} />
+      {confirmation && 
+        <Confirm 
+          confirmation={confirmation} 
+          setConfirmation={setConfirmation} 
+          setShowInputForm={setShowInputForm}
+          beneficiaryDetails={beneficiaryDetails} 
+          selectedIndex={selectedIndex} 
+          action={action} 
+        />}
+      {/* <DevTool control={control} /> */}
     </div>
   )
 }

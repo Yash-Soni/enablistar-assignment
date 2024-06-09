@@ -1,8 +1,12 @@
-import React from 'react'
+import InputForm from "./InputForm/InputForm"
 
-const AddBeneficiary = () => {
+const AddBeneficiary = ({displayAddModal, setDisplayAddModal, setShowInputForm}) => {
+  console.log('Time to ADD new');
   return (
-    <div>Add Beneficiary</div>
+    <div>
+      {displayAddModal && <InputForm showInputForm={displayAddModal} setShowInputForm={setDisplayAddModal} />}
+      
+    </div>
   )
 }
 

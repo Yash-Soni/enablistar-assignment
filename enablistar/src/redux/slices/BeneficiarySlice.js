@@ -5,15 +5,17 @@ const beneficiarySlice = createSlice({
   initialState: [],
   reducers: {
     addBeneficiary: (state, action) => {
-      console.log(`### State:`, state,  'and Action payload: ', action)
       state.push(action.payload)
-      console.log('State after update: ', state, 'action was: ', action);
     },
     editBeneficiary: (state, action) => {
-      console.log(`### State: ${state} and Action payload: ${action.payload}`)
+      const {selectedIndex, newItem} = action.payload
+      if (selectedIndex >= 0 && selectedIndex < state.length) {
+        state[selectedIndex] = { ...state[selectedIndex], ...newItem };
+      }
     },
     deleteBeneficiary: (state, action) => {
-      console.log(`### State: ${state} and Action payload: ${action.payload}`)
+      const {selectedIndex} = action.payload
+      state.splice(selectedIndex, 1)
     }
   }
 })

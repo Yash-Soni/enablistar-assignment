@@ -1,19 +1,31 @@
 import { Box, Modal, Button } from "@mui/material"
-import {useSelector, useDispatch} from 'react-redux'
-import { addBeneficiary } from "../../redux/slices/BeneficiarySlice"
+import { useDispatch } from 'react-redux'
+import { addBeneficiary, editBeneficiary, deleteBeneficiary } from "../../redux/slices/BeneficiarySlice"
 import '../InputForm/styles.css'
 
-const Confirm = ({confirmation, setConfirmation, setShowInputForm, beneficiaryDetails}) => {
+const Confirm = ({confirmation, setConfirmation, setShowInputForm, beneficiaryDetails, selectedIndex, action}) => {
   const dispatch = useDispatch()
-  const beneficiaries = useSelector(state => state.beneficiary)
+  console.log('IN the confirmation MODAL!!!');
+  let actionText = 'Add'
+  if(action === 'Delete') {
+    actionText='Delete'
+  } else if(action === 'Edit') {
+    actionText = 'Update'
+  }
   
   const updateBeneficiary = () => {
-    dispatch(addBeneficiary(beneficiaryDetails))
+    console.log('Action is: ', action);
+    if(action === 'Delete') {
+      dispatch(deleteBeneficiary({beneficiaryDetails, selectedIndex}))
+    } else if (action === 'Edit') {
+      dispatch(editBeneficiary({newItem: beneficiaryDetails, selectedIndex}))
+    } else {
+      dispatch(addBeneficiary(beneficiaryDetails))
+    }
     setConfirmation(!confirmation)
     setShowInputForm(false)
   }
-    
-  // console.log('Did You Receive the INPUT ????', beneficiaryDetails, beneficiaries);
+
   return (
     <div>
       <Modal open={confirmation} disableEscapeKeyDown disableBackdropClick>
@@ -21,7 +33,7 @@ const Confirm = ({confirmation, setConfirmation, setShowInputForm, beneficiaryDe
           <Button onClick={() => setConfirmation(false)} className='closeButton'>
             x
           </Button>
-          <p>Are you Sure to ADD a new Beneficiary?</p>
+          <p>Are you Sure to {actionText} a Beneficiary?</p>
           <button onClick={()=>updateBeneficiary()}>Yes</button>
           <button onClick={()=>setConfirmation(!confirmation)}>No</button>
         </Box>
