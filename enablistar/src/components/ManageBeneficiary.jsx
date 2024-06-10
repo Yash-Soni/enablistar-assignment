@@ -1,9 +1,12 @@
-import { useState } from "react"
-import InputForm from "./InputForm/InputForm"
+import { useEffect, useState } from "react"
+// import InputForm from "./InputForm/InputForm"
 import { useSelector } from "react-redux"
 import AddBeneficiary from "./AddBeneficiary"
 import EditBeneficiary from "./EditBeneficiary"
 import DeleteBeneficiary from "./DeleteBeneficiary"
+import profileIcon from '../icons/profile.svg'
+import bars from '../icons/bars.svg'
+import DisplayBeneficiary from "./DisplayBeneficiary"
 
 const ManageBeneficiary = () => {
   const [showInputForm, setShowInputForm] = useState(false)
@@ -15,12 +18,11 @@ const ManageBeneficiary = () => {
   const [selectedIndex, setSelectedIndex] = useState()
 
   const beneficiaries = useSelector((state) => {
-    console.log(state);
     return state.beneficiary
   })
   let tableKeys=[]
 
-  if(beneficiaries.length >0) {
+  if(beneficiaries?.length >0) {
     tableKeys = Object.keys(beneficiaries[0])
     tableKeys.unshift('#')
     tableKeys.push('')
@@ -31,13 +33,19 @@ const ManageBeneficiary = () => {
     setSelectedIndex(index)
   }
 
-  console.log('Beneficiaries: ', beneficiaries);
   return (
     <>
       <div className="header">
-        <p>Manage Beneficiary</p>
+        <div className="title">
+          <img src={bars} alt="profile" className="title-icon" />
+          <span>Manage Beneficiary</span>
+        </div>
+        <img src={profileIcon} alt="profile" className="title-icon" />
       </div>
-      <button className="addButton" onClick={() => setDisplayAddModal(true)}>Add Beneficiary</button>
+      <div>
+        <span className="navigationText">Home / List of Beneficiaries</span>
+        <button className="addButton" onClick={() => setDisplayAddModal(true)}>Add Beneficiary</button>
+      </div>
       {displayAddModal && <AddBeneficiary displayAddModal={displayAddModal} setDisplayAddModal={setDisplayAddModal} setShowInputForm={setShowInputForm} />}
       {displayEditModal && <EditBeneficiary displayEditModal={displayEditModal} setDisplayEditModal ={setDisplayEditModal} beneficiary={selectedBeneficiary} selectedIndex= {selectedIndex} />}
 
@@ -49,11 +57,14 @@ const ManageBeneficiary = () => {
         selectedIndex= {selectedIndex} 
       />}
 
-      {/* {displayAddModal && <AddBeneficiary displayAddModal={displayAddModal} setDisplayAddModal={setDisplayAddModal} />} */}
+      {displayBeneficiary && 
+      <DisplayBeneficiary 
+        displayBeneficiary={displayBeneficiary}
+        setDisplayBeneficiary = {setDisplayBeneficiary} 
+        beneficiary={selectedBeneficiary} 
+      />}
 
-      {/* {showInputForm && <InputForm showInputForm={showInputForm} setShowInputForm={setShowInputForm} />} */}
-
-      <table>
+      <table className="tableData">
         <thead>
           <tr>
             {tableKeys?.map(key => (
@@ -64,7 +75,6 @@ const ManageBeneficiary = () => {
         <tbody>
           {beneficiaries && 
             beneficiaries.map((beneficiary, index) => {
-              console.log('individual beneficiary: ', beneficiary)
               const values = Object.values(beneficiary)
               values.unshift(index+1)
               return (

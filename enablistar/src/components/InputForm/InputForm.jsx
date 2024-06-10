@@ -87,7 +87,6 @@ const InputForm = ({showInputForm, setShowInputForm, beneficiary, selectedIndex,
                     !/^(\d)\1{5}$/.test(fieldValue) || 'Enter a valid 6 digit Pin-code'
                   )
                 }
-
               }
             })} />
             {errors.pincode && <span className='errorText'>*{errors.pincode?.message}</span>}

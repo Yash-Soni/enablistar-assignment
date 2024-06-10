@@ -1,7 +1,6 @@
 import InputForm from './InputForm/InputForm';
 
 const DeleteBeneficiary = ({displayDeleteModal, setDisplayDeleteModal, beneficiary, selectedIndex}) => {
-  console.log('THIS will DELETE soon!!', beneficiary);
 
   return (
     <div>

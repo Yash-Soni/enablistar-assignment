@@ -1,7 +1,6 @@
 import InputForm from "./InputForm/InputForm"
 
 const EditBeneficiary = ({displayEditModal, setDisplayEditModal, beneficiary, selectedIndex}) => {
-  console.log('Will EDIT it now!!', beneficiary);
   
   return (
     <div>
