@@ -1,7 +1,7 @@
 import { Box, Modal, Button } from "@mui/material"
 import { useDispatch } from 'react-redux'
 import { addBeneficiary, editBeneficiary, deleteBeneficiary } from "../../redux/slices/BeneficiarySlice"
-import '../InputForm/styles.css'
+import './styles.css'
 
 const Confirm = ({confirmation, setConfirmation, setShowInputForm, beneficiaryDetails, selectedIndex, action}) => {
   const dispatch = useDispatch()
@@ -27,13 +27,18 @@ const Confirm = ({confirmation, setConfirmation, setShowInputForm, beneficiaryDe
   return (
     <div>
       <Modal open={confirmation} disableEscapeKeyDown disableBackdropClick>
-        <Box className='inputForm'>
-          <Button onClick={() => setConfirmation(false)} className='closeButton'>
+        <Box className='confirmationForm'>
+          <div>
+            <p className="confirmationText">Are you Sure to {actionText} a Beneficiary?</p>
+            <button className="yesButton" onClick={()=>updateBeneficiary()}>Yes</button>
+            <button className="noButton" onClick={()=>{
+              setConfirmation(!confirmation)
+              setShowInputForm(false)
+            }}>No</button>
+          </div>
+          <button onClick={() => setConfirmation(false)} className='closeButton'>
             x
-          </Button>
-          <p>Are you Sure to {actionText} a Beneficiary?</p>
-          <button onClick={()=>updateBeneficiary()}>Yes</button>
-          <button onClick={()=>setConfirmation(!confirmation)}>No</button>
+          </button>
         </Box>
       </Modal>
     </div>

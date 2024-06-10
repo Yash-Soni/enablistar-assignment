@@ -5,37 +5,30 @@
   top: 25%;
   left: 50%;
   transform: translate(-50%, -25%);
-  /* height: 20rem; */
-  /* padding: 2rem; */
-  /* border: 1px dotted black; */
   background-color: #fff;
-  /* z-index: 10; */
   position: relative;
 }
 
 .inputFields {
   position: absolute;
-  /* top: 50%; */
+  top: 10%;
   left: 50%;
   transform: translate(-50%);
   width: 20rem;
   display: flex;
   flex-direction: column;
-  /* gap: 12rem, */
 }
 
 .inputField {
-  /* width: 15rem;
-  height: 2rem;
-  font-size: 1.5rem; */
   margin-bottom: 20px;
 }
 
 .submitButton {
-  width: 4rem;
-  height: 2rem;
-  font-size: 1rem;
-  /* border-radius: 30%; */
+  width: 80px;
+  height: 40px;
+  background-color: rgb(108, 144, 54);
+  color: #fff;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -61,6 +54,6 @@
 }
 
 .closeButton:hover {
-  background-color: #d32f2f; /* Darker red on hover */
+  background-color: #d32f2f;
   color: #fff;
 }
