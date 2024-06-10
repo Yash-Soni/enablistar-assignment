@@ -5,7 +5,6 @@ import '../InputForm/styles.css'
 
 const Confirm = ({confirmation, setConfirmation, setShowInputForm, beneficiaryDetails, selectedIndex, action}) => {
   const dispatch = useDispatch()
-  console.log('IN the confirmation MODAL!!!');
   let actionText = 'Add'
   if(action === 'Delete') {
     actionText='Delete'
@@ -14,7 +13,6 @@ const Confirm = ({confirmation, setConfirmation, setShowInputForm, beneficiaryDe
   }
   
   const updateBeneficiary = () => {
-    console.log('Action is: ', action);
     if(action === 'Delete') {
       dispatch(deleteBeneficiary({beneficiaryDetails, selectedIndex}))
     } else if (action === 'Edit') {
